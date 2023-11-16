@@ -1,0 +1,30 @@
+#!/bin/bash
+
+preCommitFile=scripts/git-hooks/pre-commit
+prepareCommitFile=scripts/git-hooks/prepare-commit-msg
+gitHooksPATH=./.git/hooks
+preCommitFileInGitHooks=$gitHooksPATH/pre-commit
+prepareCommitFileInGitHooks=$gitHooksPATH/prepare-commit-msg
+
+#Check if gitlab-job-id is empty then copy files if does not exist
+if [ -z "$CI_JOB_ID" ]; then 
+
+	if [ -f $preCommitFileInGitHooks ]; then
+		echo "pre-commit file does exist";
+	else
+		cp $preCommitFile $gitHooksPATH && chmod +x $preCommitFileInGitHooks;
+		echo "Copy $preCommitFileInGitHooks to $gitHooksPATH";
+		echo "pre-commit file copied";
+	fi
+
+	if [ -f $prepareCommitFileInGitHooks ]; then
+		echo "prepare-commit-msg file does exist";
+	else
+		cp $prepareCommitFile $gitHooksPATH && chmod +x $prepareCommitFileInGitHooks;
+		echo "Copy $prepareCommitFileInGitHooks to $gitHooksPATH";
+		echo "prepare-commit-msg file copied";
+	fi
+
+else
+  echo "Running in CI environment, skipping postinstall";
+fi
