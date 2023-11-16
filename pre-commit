@@ -1,0 +1,11 @@
+#!/bin/bash
+
+yarn qa && tsc
+
+if [ $? -ne 0 ]; then
+  echo "Error: You forgot to format the code or there is a syntax error."
+  exit 1
+fi
+
+exit 0
+
